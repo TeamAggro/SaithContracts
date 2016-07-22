@@ -51,10 +51,21 @@ public class GameEvents : MonoBehaviour
     }
 
     public delegate void GameOverAction();
-    public static event GameOverAction onGameOver;
+    public static event GameOverAction OnGameOver;
+    // change to Gameover Screen
     public static void Gameover() {
-        if (onGameOver != null) {
-            onGameOver();
+        if (OnGameOver != null) {
+            OnGameOver();
+        }
+    }
+
+    public delegate void PauseGameAction();
+    public static event PauseGameAction OnPauseGame;
+    // Pause all objects that move
+    public static void PauseGame() {
+        if (OnPauseGame != null)
+        {
+            OnPauseGame();
         }
     }
 
