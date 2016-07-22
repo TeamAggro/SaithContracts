@@ -70,7 +70,7 @@ public class KeyManager : MonoBehaviour
         input.AddControl("Down", blank);
         input.AddControl("Right", player.Right);
         input.AddControl("Left", player.Left);
-        input.AddControl("Run", player.Run);
+        input.AddControl("L_SHIFT", player.Ability);
         input.AddControl("W", blank);
         input.AddControl("A", blank);
         input.AddControl("S", blank);

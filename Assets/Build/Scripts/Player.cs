@@ -8,7 +8,8 @@ public class Player : MonoBehaviour
     private InputManager input = new InputManager();
 
     private bool _facingRight = true;
-    private static float _mspd;
+    private float time = 0;
+    private static float _mspd = 10f;
 
     private enum Scenetype { menu, game, map, battle };
     static Scenetype scene;
@@ -22,18 +23,11 @@ public class Player : MonoBehaviour
     }
     public void Left()
     {
-        _rigidbody2D.velocity = new Vector2(_mspd * -1, _rigidbody2D.velocity.y);
+       _rigidbody2D.velocity = new Vector2(_mspd * -1, _rigidbody2D.velocity.y);
     }
-    public void Idle() {
-        _mspd = 0;
-    }
-    public void Run()
+    public void Ability()
     {
-        _mspd = 20f;
-    }
-    public void Walk()
-    {
-        _mspd = 10f;
+        _animator.SetBool("Ability", true);
     }
     public void flip()
     {
@@ -51,37 +45,27 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        _animator.SetFloat("Speed", _mspd*Mathf.Abs(Input.GetAxis("HORIZONTAL")));
+        _animator.SetFloat("Speed", _mspd * Mathf.Abs(Input.GetAxis("HORIZONTAL")));
     }
     void FixedUpdate()
     {
         if (Input.GetAxis("HORIZONTAL") < 0)
         {
             if (!_facingRight) { flip(); }
-            if (Input.GetButton("L_SHIFT"))
-            {
-                Run();
-                input.ExecuteCommand("Left");
-            }
-            else
-            {
-                Walk();
-                input.ExecuteCommand("Left");
-            }
+            input.ExecuteCommand("Left");
         }
         if (Input.GetAxis("HORIZONTAL") > 0)
         {
             if (_facingRight) { flip(); }
-            if (Input.GetButton("L_SHIFT"))
-            {
-                Run();
-                input.ExecuteCommand("Right");
-            }
-            else
-            {
-                Walk();
-                input.ExecuteCommand("Right");
-            }
+            input.ExecuteCommand("Right");
+        }
+        if (Input.GetButton("L_SHIFT"))
+        {
+            input.ExecuteCommand("L_SHIFT");
+        }
+        if (Input.GetButtonUp("L_SHIFT"))
+        {
+            _animator.SetBool("Ability", false);
         }
     }
 }
