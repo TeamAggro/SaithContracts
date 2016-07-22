@@ -6,7 +6,7 @@ using Aggro.Command;
 public class InputManager
 {
 
-    private Dictionary<string, InputAction> commandList;
+    private static Dictionary<string, InputAction> commandList;
 
     public InputManager()
     {
@@ -40,6 +40,13 @@ public class InputManager
         {
             throw new System.ArgumentException("No such command");
         }
+    }
+    public void PrintCommand(string _cmdName)
+    {
+        if (commandList.ContainsKey(_cmdName))
+            Debug.Log("there is such a command");
+        else
+            Debug.Log("there is no such a command");
     }
 
 }
