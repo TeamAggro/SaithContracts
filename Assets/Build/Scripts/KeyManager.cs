@@ -9,7 +9,11 @@ public class KeyManager : MonoBehaviour
 
     // Use this for initialization
     InputManager input = new InputManager();
-    Player player = new Player();
+    public Player player;
+
+    void Start() {
+//        player = GetComponent<Player>(); 
+    }
 
     #region Events
     void OnEnable()
