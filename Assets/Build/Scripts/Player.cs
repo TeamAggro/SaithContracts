@@ -10,12 +10,16 @@ public class Player : MonoBehaviour
     private InputManager input = new InputManager();
 
     private bool _facingRight = true;
-    private static float speed = 10f;
+    public  static float baseSpeed = 20f;
+    public  static float jumpHeight = 30f;
+    private float modifier = 1.75f;
+    private float speed = baseSpeed;
 
     enum Scenetype { menu, game, map, battle };
     static Scenetype scene;
     enum Character { a, b, c, d, e, f, g, h, i, j, k, l, m, n};
     static Character _character;
+
 
     #region Characters
     void CurrentCharacter (Character character)
@@ -28,26 +32,33 @@ public class Player : MonoBehaviour
     public void Right()
     {
         if (_facingRight) { flip(); }
-        _transform.Translate(speed * Time.deltaTime, 0, 0);
+        _rigidbody2D.velocity = new Vector2(speed, _rigidbody2D.velocity.y);
     }
     public void Left()
     {
         if (!_facingRight) { flip(); }
-        _transform.Translate(-speed * Time.deltaTime, 0, 0);
+        _rigidbody2D.velocity = new Vector2(-speed, _rigidbody2D.velocity.y);
     }
     public void flip()
     {
         _facingRight = !_facingRight;
         _transform.localScale = new Vector3(_transform.localScale.x * -1, _transform.localScale.y, _transform.localScale.z);
     }
+    public void Jump()
+    {
+        
+        Debug.Log("A Button Pressed");
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
+
+    }
     public void AbilityOn()
     {
-        speed = 20f;
+        speed = baseSpeed * modifier;
         _animator.SetBool("Ability", true);
     }
     public void AbilityOff()
     {
-        speed = 10f;
+        speed = baseSpeed;
         _animator.SetBool("Ability", false);
     }
 
@@ -94,6 +105,16 @@ public class Player : MonoBehaviour
         if(scene == Scenetype.game)
         {
             _animator.SetFloat("Speed", speed * Mathf.Abs(Input.GetAxis("HORIZONTAL")));
+            _animator.SetFloat("velocityX",_rigidbody2D.velocity.x);
+            _animator.SetFloat("velocityY",_rigidbody2D.velocity.y);
+            if (_rigidbody2D.velocity.y > 0)
+            {
+                _animator.SetBool("Jumping", true);
+            }
+            else if (_rigidbody2D.velocity.y <= 0)
+            {
+                _animator.SetBool("Jumping", false);
+            }
             if (Input.GetAxis("HORIZONTAL") > 0)
             {
                 input.ExecuteCommand("Right");
@@ -102,11 +123,11 @@ public class Player : MonoBehaviour
             {
                 input.ExecuteCommand("Left");
             }
-            if (Input.GetAxis("VIRTICAL") < 0)
+            if (Input.GetAxis("VERTICAL") < 0)
             {
                 input.ExecuteCommand("Down");
             }
-            if (Input.GetAxis("VIRTICAL") > 0)
+            if (Input.GetAxis("VERTICAL") > 0)
             {
                 input.ExecuteCommand("Up");
             }
@@ -117,6 +138,10 @@ public class Player : MonoBehaviour
             if (Input.GetButtonUp("L_SHIFT"))
             {
                 input.ExecuteCommand("L_SHIFT_Off");
+            }
+            if(Input.GetButtonDown("ENTER"))
+            {
+                input.ExecuteCommand("ENTER");
             }
         }
     }

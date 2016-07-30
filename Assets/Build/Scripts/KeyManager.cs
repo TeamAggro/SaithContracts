@@ -76,6 +76,7 @@ public class KeyManager : MonoBehaviour
         input.AddControl("Left", player.Left);
         input.AddControl("L_SHIFT_On", player.AbilityOn);
         input.AddControl("L_SHIFT_Off", player.AbilityOff);
+        input.AddControl("ENTER", player.Jump);
         input.AddControl("W", blank);
         input.AddControl("A", blank);
         input.AddControl("S", blank);
