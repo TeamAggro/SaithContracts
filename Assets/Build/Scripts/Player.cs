@@ -47,8 +47,8 @@ public class Player : MonoBehaviour
     public void Jump()
     {
         
-        Debug.Log("A Button Pressed");
-            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
+        Debug.Log("Jump Button was Pressed");
+         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
 
     }
     public void AbilityOn()
@@ -98,15 +98,17 @@ public class Player : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _transform = GetComponent<Transform>();
-        GameEvents.PlatformScreen();
     }
     void Update()
     {
+        if (Input.GetButtonDown("A"))
+            GameEvents.PlatformScreen();
         if(scene == Scenetype.game)
         {
-            _animator.SetFloat("Speed", speed * Mathf.Abs(Input.GetAxis("HORIZONTAL")));
-            _animator.SetFloat("velocityX",_rigidbody2D.velocity.x);
+            _animator.SetFloat("Speed", speed);
+            _animator.SetFloat("velocityX", Mathf.Abs(_rigidbody2D.velocity.x));
             _animator.SetFloat("velocityY",_rigidbody2D.velocity.y);
+
             if (_rigidbody2D.velocity.y > 0)
             {
                 _animator.SetBool("Jumping", true);
@@ -115,33 +117,40 @@ public class Player : MonoBehaviour
             {
                 _animator.SetBool("Jumping", false);
             }
-            if (Input.GetAxis("HORIZONTAL") > 0)
+            if (Input.GetAxis("HORIZONTAL") > 0 || Input.GetAxis("HORIZONTAL_KEYBOARD") > 0)
             {
                 input.ExecuteCommand("Right");
+                Debug.Log("Right");
             }
-            if (Input.GetAxis("HORIZONTAL") < 0)
+            if (Input.GetAxis("HORIZONTAL") < 0 || Input.GetAxis("HORIZONTAL_KEYBOARD") < 0)
             {
                 input.ExecuteCommand("Left");
+                Debug.Log("Left");
             }
-            if (Input.GetAxis("VERTICAL") < 0)
+            if (Input.GetAxis("VERTICAL") < 0 || Input.GetAxis("VERTICAL_KEYBOARD") > 0 )
             {
                 input.ExecuteCommand("Down");
+                Debug.Log("Down");
             }
-            if (Input.GetAxis("VERTICAL") > 0)
+            if (Input.GetAxis("VERTICAL") > 0 || Input.GetAxis("VERTICAL_KEYBOARD") < 0) 
             {
                 input.ExecuteCommand("Up");
+                Debug.Log("Up");
             }
             if (Input.GetButtonDown("L_SHIFT"))
             {
                 input.ExecuteCommand("L_SHIFT_On");
+                Debug.Log("Left Shift Down");
             }
             if (Input.GetButtonUp("L_SHIFT"))
             {
                 input.ExecuteCommand("L_SHIFT_Off");
+                Debug.Log("Left Shift Up");
             }
-            if(Input.GetButtonDown("ENTER"))
+            if (Input.GetButtonDown("ENTER"))
             {
                 input.ExecuteCommand("ENTER");
+                Debug.Log("Enter");
             }
         }
     }
