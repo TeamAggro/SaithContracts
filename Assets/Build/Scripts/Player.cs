@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private InputManager input = new InputManager();
 
     private bool _facingRight = true;
+    private bool _grounded = true;
     public  static float baseSpeed = 20f;
     public  static float jumpHeight = 30f;
     private float modifier = 1.75f;
@@ -46,11 +47,14 @@ public class Player : MonoBehaviour
     }
     public void Jump()
     {
-        
-        Debug.Log("Jump Button was Pressed");
-         _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
-
+        if(_grounded)
+        {
+            Debug.Log("Jump Button was Pressed");
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
+            _grounded = false;
+        }
     }
+
     public void AbilityOn()
     {
         speed = baseSpeed * modifier;
@@ -93,18 +97,28 @@ public class Player : MonoBehaviour
 
     #endregion Events
 
+    void OnCollisionEnter2D(Collision2D obj) {
+        if (obj.gameObject.tag == "Ground")
+        {
+            _grounded = true;
+        }
+    }
+
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _transform = GetComponent<Transform>();
     }
+
     void Update()
     {
         if (Input.GetButtonDown("A"))
             GameEvents.PlatformScreen();
+
         if(scene == Scenetype.game)
         {
+            _animator.SetBool("Grounded", _grounded);
             _animator.SetFloat("Speed", speed);
             _animator.SetFloat("velocityX", Mathf.Abs(_rigidbody2D.velocity.x));
             _animator.SetFloat("velocityY",_rigidbody2D.velocity.y);
