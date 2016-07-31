@@ -123,14 +123,6 @@ public class Player : MonoBehaviour
             _animator.SetFloat("velocityX", Mathf.Abs(_rigidbody2D.velocity.x));
             _animator.SetFloat("velocityY",_rigidbody2D.velocity.y);
 
-            if (_rigidbody2D.velocity.y > 0)
-            {
-                _animator.SetBool("Jumping", true);
-            }
-            else if (_rigidbody2D.velocity.y <= 0)
-            {
-                _animator.SetBool("Jumping", false);
-            }
             if (Input.GetAxis("HORIZONTAL") > 0 || Input.GetAxis("HORIZONTAL_KEYBOARD") > 0)
             {
                 input.ExecuteCommand("Right");
