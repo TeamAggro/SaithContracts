@@ -5,8 +5,9 @@ public class Player : MonoBehaviour
 {
     public Animator _animator;
     public Transform _transform;
+    public Transform _groundCheck;
     public Rigidbody2D _rigidbody2D;
-
+    public LayerMask _whatIsGround;
     private InputManager input = new InputManager();
 
     private bool _facingRight = true;
@@ -97,13 +98,6 @@ public class Player : MonoBehaviour
 
     #endregion Events
 
-    void OnCollisionEnter2D(Collision2D obj) {
-        if (obj.gameObject.tag == "Ground")
-        {
-            _grounded = true;
-        }
-    }
-
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -118,7 +112,6 @@ public class Player : MonoBehaviour
 
         if(scene == Scenetype.game)
         {
-            _animator.SetBool("Grounded", _grounded);
             _animator.SetFloat("Speed", speed);
             _animator.SetFloat("velocityX", Mathf.Abs(_rigidbody2D.velocity.x));
             _animator.SetFloat("velocityY",_rigidbody2D.velocity.y);
@@ -161,5 +154,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    void FixedUpate()
+    {
+        _animator.SetBool("Grounded", Physics2D.OverlapCircle(_groundCheck.position, .5f, _whatIsGround));
+    }
 
 }
