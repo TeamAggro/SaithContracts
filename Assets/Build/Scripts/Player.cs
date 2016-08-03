@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private bool _facingRight = true;
     private bool _grounded = false;
     public  static float baseSpeed = 20f;
-    public  static float jumpHeight = 30f;
+    public  static float jumpHeight = 40f;
     private float modifier = 1.75f;
     private float speed = baseSpeed;
 
@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Jump Button was Pressed");
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpHeight);
-            _grounded = false;
         }
     }
 
@@ -75,6 +74,7 @@ public class Player : MonoBehaviour
         else
         {
             _animator.SetBool("Grounded", false);
+            _grounded = false;
         }
     }
 
