@@ -5,13 +5,12 @@ public class Player : MonoBehaviour
 {
     public Animator _animator;
     public Transform _transform;
-    public Transform _groundCheck;
     public Rigidbody2D _rigidbody2D;
     public LayerMask _whatIsGround;
     private InputManager input = new InputManager();
 
     private bool _facingRight = true;
-    private bool _grounded = true;
+    private bool _grounded = false;
     public  static float baseSpeed = 20f;
     public  static float jumpHeight = 30f;
     private float modifier = 1.75f;
@@ -65,6 +64,18 @@ public class Player : MonoBehaviour
     {
         speed = baseSpeed;
         _animator.SetBool("Ability", false);
+    }
+
+    public void GroundCheck() {
+        if (Physics2D.OverlapCircle(new Vector2(_transform.position.x, _transform.position.y - 3.5f), .5f, _whatIsGround) != null)
+        {
+            _animator.SetBool("Grounded", true);
+            _grounded = true;
+        }
+        else
+        {
+            _animator.SetBool("Grounded", false);
+        }
     }
 
     #endregion Game Controls
@@ -154,9 +165,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    void FixedUpate()
-    {
-        _animator.SetBool("Grounded", Physics2D.OverlapCircle(_groundCheck.position, .5f, _whatIsGround));
+    void FixedUpdate() {
+        GroundCheck();
     }
+
 
 }
